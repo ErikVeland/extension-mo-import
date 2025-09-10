@@ -1,3 +1,5 @@
+@import "details";
+
 #import-dialog {
   .modal-dialog {
     width: 80%;
@@ -34,7 +36,7 @@
 }
 
 .import-success {
-  @extend .h3;
+  font-size: $font-size-h3;
   text-align: center;
   color: $brand-success;
   svg {
@@ -44,7 +46,7 @@
 }
 
 .import-errors {
-  @extend .h3;
+  font-size: $font-size-h3;
   text-align: center;
   color: $brand-danger;
 }
@@ -105,5 +107,41 @@
         }
       }
     }
+  }
+}
+
+.mo-import-dialog {
+  .import-progress {
+    margin-top: $half-gutter;
+    margin-bottom: $half-gutter;
+  }
+
+  .import-status {
+    margin-top: $half-gutter;
+    padding: $half-gutter;
+    border: $border-width solid $border-color;
+    border-radius: $border-radius-base;
+  }
+
+  .import-warnings {
+    margin-top: $half-gutter;
+    padding: $half-gutter;
+    background-color: rgba($brand-warning, 0.1);
+    border: $border-width solid $brand-warning;
+    border-radius: $border-radius-base;
+  }
+
+  .import-errors {
+    margin-top: $half-gutter;
+    padding: $half-gutter;
+    background-color: rgba($brand-danger, 0.1);
+    border: $border-width solid $brand-danger;
+    border-radius: $border-radius-base;
+  }
+
+  .import-summary {
+    margin-top: $gutter-width;
+    padding: $half-gutter;
+    border-top: $border-width solid $border-color;
   }
 }
