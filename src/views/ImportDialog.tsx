@@ -10,7 +10,7 @@ import Promise from 'bluebird';
 import * as I18next from 'i18next';
 import * as React from 'react';
 import { Alert, Button, ControlLabel, DropdownButton, FormControl, FormGroup,
-  InputGroup, MenuItem, ProgressBar,
+         InputGroup, MenuItem, ProgressBar,
 } from 'react-bootstrap';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -82,7 +82,7 @@ class ImportDialog extends ComponentEx<IProps, IComponentState> {
           this.nextState.importPathInvalid = (moconfig.game === convertGameId(gameId))
             ? undefined
             : t('Can\'t import mods from different game: {{gameId}}',
-              { replace: { gameId: moconfig.game } });
+                { replace: { gameId: moconfig.game } });
         })
         .catch(err => {
           log('warn', 'invalid MO directory', { error: err.messag });
@@ -122,7 +122,7 @@ class ImportDialog extends ComponentEx<IProps, IComponentState> {
           {canCancel ? <Button onClick={this.cancel}>{t('Cancel')}</Button> : null}
           {nextLabel ? (
             <Button disabled={this.nextDisabled()} onClick={this.next}>{nextLabel}</Button>
-           ) : null}
+          ) : null}
         </Modal.Footer>
       </Modal>
     );
@@ -477,16 +477,16 @@ class ImportDialog extends ComponentEx<IProps, IComponentState> {
             + 'is not being blocked by your Anti-Virus and then try again.'
           : err;
         this.context.api.showErrorNotification('Failed to start import process',
-          errorMessage, { allowReport: err.code !== 'EPERM' });
+                                               errorMessage, { allowReport: err.code !== 'EPERM' });
         this.nextState.failedImports = modList.map(mod => mod.modName);
         this.setStep('review');
         return Promise.resolve();
       })
       .then(() => importMods(t, this.context.api.store, this.mTrace,
-        importMOConfig, enabledMods, importArchives,
-        (mod: string, perc: number) => {
-          this.nextState.progress = { mod, perc };
-        }))
+                             importMOConfig, enabledMods, importArchives,
+                             (mod: string, perc: number) => {
+                               this.nextState.progress = { mod, perc };
+                             }))
       .then(errors => {
         this.nextState.failedImports = errors;
         this.setStep('review');

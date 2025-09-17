@@ -57,55 +57,55 @@ function parseMOIni(games: {[gameId: string]: types.IDiscoveryResult},
                     basePath: string): Promise<IMOConfig> {
   let normalize: (input: string) => string;
   return util.getNormalizeFunc(basePath)
-      .then(normalizeFunc => {
-        normalize = normalizeFunc;
-        return parser.read(path.join(basePath, 'ModOrganizer.ini'));
-      })
-      .then((file: IniFile<IIniSpec>) => {
-        if (Object.keys(file.data).length === 0) {
-          return Promise.reject(new Error(
-            'This doesn\'t look like a portable MO install, '
+    .then(normalizeFunc => {
+      normalize = normalizeFunc;
+      return parser.read(path.join(basePath, 'ModOrganizer.ini'));
+    })
+    .then((file: IniFile<IIniSpec>) => {
+      if (Object.keys(file.data).length === 0) {
+        return Promise.reject(new Error(
+          'This doesn\'t look like a portable MO install, '
             + 'please check in the instances to the left.'));
+      }
+      let dataBasePath = basePath;
+      try {
+        if (file.data.Settings.base_directory) {
+          dataBasePath = file.data.Settings.base_directory;
         }
-        let dataBasePath = basePath;
-        try {
-          if (file.data.Settings.base_directory) {
-            dataBasePath = file.data.Settings.base_directory;
-          }
-        } catch (err) {
+      } catch (err) {
           // nop
+      }
+      let downloadPath = path.join(dataBasePath, 'downloads');
+      let modPath = path.join(dataBasePath, 'mods');
+      try {
+        if (file.data.Settings.download_directory) {
+          downloadPath = file.data.Settings.download_directory;
         }
-        let downloadPath = path.join(dataBasePath, 'downloads');
-        let modPath = path.join(dataBasePath, 'mods');
-        try {
-          if (file.data.Settings.download_directory) {
-            downloadPath = file.data.Settings.download_directory;
-          }
-        } catch (err) {
+      } catch (err) {
           // nop
+      }
+      try {
+        if (file.data.Settings.mod_directory) {
+          modPath = file.data.Settings.mod_directory;
         }
-        try {
-          if (file.data.Settings.mod_directory) {
-            modPath = file.data.Settings.mod_directory;
-          }
-        } catch (err) {
+      } catch (err) {
           // nop
-        }
-        try {
-          return Promise.resolve({
-            game: determineGame(games, file.data.General.gameName,
-                                file.data.General.gamePath, normalize),
-            downloadPath,
-            modPath,
-          });
-        } catch (err) {
-          return Promise.reject(err);
-        }
-      })
-      .catch(err => {
-        log('warn', 'invalid mo inifile', { err: err.message });
+      }
+      try {
+        return Promise.resolve({
+          game: determineGame(games, file.data.General.gameName,
+                              file.data.General.gamePath, normalize),
+          downloadPath,
+          modPath,
+        });
+      } catch (err) {
         return Promise.reject(err);
-      });
+      }
+    })
+    .catch(err => {
+      log('warn', 'invalid mo inifile', { err: err.message });
+      return Promise.reject(err);
+    });
 }
 
 export default parseMOIni;

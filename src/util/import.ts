@@ -71,7 +71,7 @@ function importMods(t: I18next.TranslationFunction,
                       actions.setDownloadModInfo(archiveId, 'source', 'nexus'));
                     store.dispatch(
                       actions.setDownloadModInfo(archiveId, 'nexus.ids.modId',
-                        parseInt(mod.nexusId, 10)));
+                                                 parseInt(mod.nexusId, 10)));
                     store.dispatch(
                       actions.setDownloadModInfo(archiveId, 'nexus.ids.gameId', gameId));
 
